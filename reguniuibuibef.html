@@ -1,0 +1,3403 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnSpaceUUST - Личный кабинет студента</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7E57C2">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="LearnSpaceUUST">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==">
+    
+    <style>
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7E57C2;
+            --primary-dark: #5E35B1;
+            --primary-light: #B39DDB;
+            --secondary: #26A69A;
+            --accent: #FF7043;
+            --success: #66BB6A;
+            --warning: #FFA726;
+            --error: #EF5350;
+            --background: #F5F7FA;
+            --surface: #FFFFFF;
+            --text-primary: #2C3E50;
+            --text-secondary: #546E7A;
+            --text-light: #90A4AE;
+            --border: #E1E8ED;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --radius-lg: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s ease;
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dark-theme {
+            --primary: #9575CD;
+            --primary-dark: #7E57C2;
+            --primary-light: #B39DDB;
+            --secondary: #4DB6AC;
+            --accent: #FF8A65;
+            --success: #81C784;
+            --warning: #FFB74D;
+            --error: #E57373;
+            --background: #121212;
+            --surface: #1E1E1E;
+            --text-primary: #E0E0E0;
+            --text-secondary: #B0BEC5;
+            --text-light: #78909C;
+            --border: #37474F;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.4);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5em;
+        }
+
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        h4 { font-size: 1.25rem; }
+
+        p {
+            margin-bottom: 1em;
+            color: var(--text-secondary);
+        }
+
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        .text-lg { font-size: 1.125rem; }
+
+        /* ===== LOGIN STYLES ===== */
+        .login-container {
+            background: var(--surface);
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container h1 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 2.25rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-container p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            background: var(--surface);
+            color: var(--text-primary);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(126, 87, 194, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(126, 87, 194, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: var(--error);
+            margin-top: 1rem;
+            display: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.75rem;
+            background: rgba(239, 83, 80, 0.1);
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--error);
+        }
+
+        /* ===== DASHBOARD STYLES ===== */
+        .dashboard {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: none;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header {
+            background: var(--surface);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        .header h1 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+
+        .search-container {
+            margin: 1.5rem 0;
+        }
+
+        #globalSearch {
+            width: 100%;
+            max-width: 500px;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            font-size: 1rem;
+            background: var(--surface);
+            color: var(--text-primary);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        #globalSearch:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* ===== MENU STYLES ===== */
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .menu button {
+            padding: 1.5rem;
+            background: var(--surface);
+            color: var(--text-primary);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: var(--transition-slow);
+        }
+
+        .menu button:hover::before {
+            left: 100%;
+        }
+
+        .menu button:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .menu button i {
+            font-size: 1.25rem;
+            width: 24px;
+            transition: var(--transition);
+        }
+
+        .menu button:hover i {
+            transform: scale(1.2);
+        }
+
+        /* ===== CONTENT STYLES ===== */
+        .content {
+            background: var(--surface);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            min-height: 600px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .content h2 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            font-size: 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .content h2 i {
+            font-size: 1.5rem;
+        }
+
+        /* ===== BUTTON STYLES ===== */
+        .desktop-buttons {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .mobile-buttons {
+            display: none;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            font-size: 1.125rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transition: var(--transition-fast);
+            transform: translate(-50%, -50%);
+        }
+
+        .action-btn:hover::after {
+            width: 100%;
+            height: 100%;
+        }
+
+        .theme-toggle { background: var(--primary); color: white; }
+        .notifications-btn { background: var(--accent); color: white; }
+        .settings-btn { background: var(--secondary); color: white; }
+        .logout-btn { 
+            background: var(--surface); 
+            color: var(--text-primary); 
+            padding: 0.75rem 1.5rem; 
+            border-radius: 25px; 
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .logout-btn:hover {
+            background: var(--error);
+            color: white;
+        }
+
+        /* ===== CARD STYLES ===== */
+        .card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.25rem;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0.75rem 0;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* ===== GRID SYSTEM ===== */
+        .grid-2 { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 1.25rem; 
+        }
+        .grid-3 { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 1.25rem; 
+        }
+        .grid-4 { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 1.25rem; 
+        }
+
+        /* ===== TABLE STYLES ===== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin: 1.5rem 0;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .table tr:hover {
+            background: rgba(126, 87, 194, 0.05);
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ===== TAG STYLES ===== */
+        .tag {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 0.125rem;
+            transition: var(--transition-fast);
+        }
+
+        .tag:hover {
+            transform: scale(1.05);
+        }
+
+        .tag-success { background: var(--success); color: white; }
+        .tag-warning { background: var(--warning); color: white; }
+        .tag-error { background: var(--error); color: white; }
+        .tag-secondary { background: var(--secondary); color: white; }
+        .tag-accent { background: var(--accent); color: white; }
+
+        /* ===== ACHIEVEMENT STYLES ===== */
+        .achievement {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            transition: var(--transition);
+        }
+
+        .achievement.earned::before {
+            background: var(--success);
+        }
+
+        .achievement.locked::before {
+            background: var(--text-light);
+        }
+
+        .achievement:hover {
+            transform: translateX(8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .achievement-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .achievement.earned .achievement-icon {
+            background: var(--success);
+            color: white;
+        }
+
+        /* ===== VOICE ASSISTANT ===== */
+        .voice-assistant {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+        }
+
+        .voice-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #FF5722);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 112, 67, 0.4);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .voice-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.1);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .voice-btn:hover::before {
+            opacity: 1;
+        }
+
+        .voice-btn.listening {
+            background: linear-gradient(135deg, var(--secondary), #00897B);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { 
+                transform: scale(1); 
+                box-shadow: 0 8px 25px rgba(38, 166, 154, 0.4); 
+            }
+            50% { 
+                transform: scale(1.1); 
+                box-shadow: 0 12px 35px rgba(38, 166, 154, 0.6); 
+            }
+            100% { 
+                transform: scale(1); 
+                box-shadow: 0 8px 25px rgba(38, 166, 154, 0.4); 
+            }
+        }
+
+        .voice-status {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            background: var(--surface);
+            padding: 0.75rem 1.25rem;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            display: none;
+            min-width: 200px;
+            text-align: center;
+            font-weight: 600;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        /* ===== SKILLS TRACKER ===== */
+        .skill-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .skill-item:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .skill-level {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .skill-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: var(--transition-fast);
+        }
+
+        .skill-dot.active {
+            background: var(--secondary);
+            transform: scale(1.2);
+        }
+
+        .skill-category {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== PORTFOLIO STYLES ===== */
+        .project-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.75rem 0;
+        }
+
+        .project-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* ===== FATIGUE TRACKER ===== */
+        .fatigue-meter {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fatigue-meter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--success), var(--warning), var(--error));
+        }
+
+        .fatigue-level {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .fatigue-recommendation {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(126, 87, 194, 0.1);
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--primary);
+        }
+
+        /* ===== BREAK REMINDERS ===== */
+        .reminder-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .reminder-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .reminder-card.active {
+            border-color: var(--success);
+        }
+
+        .reminder-time {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== MODAL STYLES ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 90%;
+            max-width: 500px;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1200px) {
+            .menu {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            body { 
+                padding: 0.75rem; 
+            }
+            
+            .login-container { 
+                padding: 2rem 1.5rem; 
+                margin: 1rem;
+            }
+            
+            .header { 
+                padding: 1.5rem 1.25rem; 
+            }
+            
+            .header h1 { 
+                font-size: 1.75rem; 
+            }
+            
+            .menu { 
+                grid-template-columns: 1fr; 
+                gap: 0.75rem; 
+            }
+            
+            .menu button { 
+                padding: 1.25rem; 
+                font-size: 0.9rem; 
+            }
+            
+            .content { 
+                padding: 1.5rem 1.25rem; 
+            }
+            
+            .desktop-buttons { 
+                display: none; 
+            }
+            
+            .mobile-buttons { 
+                display: flex; 
+            }
+            
+            .grid-2, .grid-3, .grid-4 { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .voice-btn {
+                width: 56px;
+                height: 56px;
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container { 
+                padding: 1.5rem 1rem; 
+            }
+            
+            .header { 
+                padding: 1.25rem 1rem; 
+            }
+            
+            .content { 
+                padding: 1.25rem 1rem; 
+            }
+            
+            .menu button { 
+                padding: 1rem; 
+            }
+            
+            .action-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1rem;
+            }
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        
+        .mb-0 { margin-bottom: 0; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+        
+        .mt-0 { margin-top: 0; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+        
+        .p-0 { padding: 0; }
+        .p-1 { padding: 0.5rem; }
+        .p-2 { padding: 1rem; }
+        .p-3 { padding: 1.5rem; }
+        .p-4 { padding: 2rem; }
+        
+        .flex { display: flex; }
+        .flex-column { flex-direction: column; }
+        .flex-center { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .flex-between { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+        }
+        .flex-gap-1 { gap: 0.5rem; }
+        .flex-gap-2 { gap: 1rem; }
+        .flex-gap-3 { gap: 1.5rem; }
+        
+        .w-100 { width: 100%; }
+        .h-100 { height: 100%; }
+        
+        .hidden { display: none; }
+        .visible { display: block; }
+        
+        .opacity-0 { opacity: 0; }
+        .opacity-50 { opacity: 0.5; }
+        .opacity-100 { opacity: 1; }
+
+        /* ===== LOADING ANIMATIONS ===== */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* ===== SCROLLBAR STYLING ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .voice-assistant,
+            .desktop-buttons,
+            .mobile-buttons {
+                display: none !important;
+            }
+            
+            .dashboard {
+                box-shadow: none;
+            }
+            
+            .card {
+                break-inside: avoid;
+            }
+        }
+
+        /* ===== CHAT STYLES ===== */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: var(--surface);
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 70%;
+        }
+
+        .my-message {
+            background: var(--primary);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .other-message {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .message-sender {
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            margin-right: 10px;
+            background: var(--surface);
+            color: var(--text-primary);
+        }
+
+        .chat-input button {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* ===== HOMEWORK STYLES ===== */
+        .homework-item {
+            background: var(--surface);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: var(--radius);
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .homework-subject {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .homework-deadline {
+            color: var(--accent);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .homework-completed {
+            background: var(--success);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .homework-pending {
+            background: var(--warning);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        /* ===== CALENDAR STYLES ===== */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .calendar-day {
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--surface);
+        }
+
+        .calendar-day.has-event {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--accent);
+        }
+
+        /* ===== SEARCH RESULTS ===== */
+        .search-result {
+            background: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            margin: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Контейнер входа -->
+    <div class="login-container" id="loginContainer">
+        <h1>LearnSpaceUUST</h1>
+        <p>Ваш персональный образовательный портал</p>
+        
+        <div class="form-group">
+            <label for="fio">ФИО:</label>
+            <input type="text" id="fio" placeholder="Введите ваше ФИО" value="Мударисова Рената Альфридовна">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" placeholder="Введите пароль" value="123456">
+        </div>
+        
+        <button class="login-btn" onclick="login()">
+            <span class="btn-text">Войти в систему</span>
+        </button>
+        
+        <div class="error-message" id="errorMessage">
+            Неверные данные для входа. Попробуйте снова.
+        </div>
+
+        <div style="margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-light);">
+            <strong>Тестовые данные уже введены</strong><br>
+            Нажмите "Войти в систему"
+        </div>
+    </div>
+
+    <!-- Основная панель -->
+    <div class="dashboard" id="dashboard">
+        <!-- Кнопки для десктопа -->
+        <div class="desktop-buttons">
+            <button class="action-btn theme-toggle" onclick="toggleTheme()" title="Сменить тему">🌙</button>
+            <button class="action-btn notifications-btn" onclick="toggleNotifications()" title="Уведомления">🔔</button>
+            <button class="action-btn settings-btn" onclick="showSettings()" title="Настройки">⚙️</button>
+            <button class="logout-btn" onclick="logout()">Выйти</button>
+        </div>
+        
+        <div class="header">
+            <h1>LearnSpaceUUST</h1>
+            <p id="studentName">Мударисова Рената Альфридовна, 1 курс • Программная инженерия</p>
+            <div class="search-container">
+                <input type="text" id="globalSearch" placeholder="🔍 Поиск по расписанию, оценкам, заданиям..." onkeyup="performSearch()">
+            </div>
+            
+            <!-- Кнопки для мобильных -->
+            <div class="mobile-buttons">
+                <button class="action-btn theme-toggle" onclick="toggleTheme()">🌙</button>
+                <button class="action-btn notifications-btn" onclick="toggleNotifications()">🔔</button>
+                <button class="action-btn settings-btn" onclick="showSettings()">⚙️</button>
+                <button class="logout-btn" onclick="logout()">Выйти</button>
+            </div>
+        </div>
+        
+        <!-- Основное меню -->
+        <div class="menu">
+            <button onclick="showSchedule()"><i>📅</i> Расписание</button>
+            <button onclick="showGrades()"><i>📊</i> Успеваемость</button>
+            <button onclick="showRecordBook()"><i>🎓</i> Электронная зачетка</button>
+            <button onclick="showCalendar()"><i>📅</i> Календарь</button>
+            <button onclick="showProfile()"><i>👤</i> Профиль</button>
+            <button onclick="showHomework()"><i>📚</i> Домашние задания</button>
+            <button onclick="showChat()"><i>💬</i> Чат</button>
+            <button onclick="showProgress()"><i>📈</i> Прогресс</button>
+            <button onclick="showAchievements()"><i>🏆</i> Достижения</button>
+            <button onclick="showEvents()"><i>🎪</i> Мероприятия</button>
+            <button onclick="showNotes()"><i>📝</i> Заметки</button>
+            <button onclick="showStudyMaterials()"><i>📁</i> Материалы</button>
+            <button onclick="showResources()"><i>🔗</i> Ресурсы</button>
+            <button onclick="showLeaderboard()"><i>⭐</i> Рейтинг</button>
+            <button onclick="showThemes()"><i>🎨</i> Темы</button>
+            <button onclick="showSkills()"><i>⚡</i> Навыки</button>
+            <button onclick="showPortfolio()"><i>💼</i> Портфолио</button>
+            <button onclick="showFatigueTracker()"><i>😴</i> Трекер усталости</button>
+            <button onclick="showBreakReminders()"><i>⏰</i> Перерывы</button>
+        </div>
+        
+        <!-- Основной контент -->
+        <div class="content" id="content">
+            <h2><i>🚀</i> Добро пожаловать в LearnSpaceUUST!</h2>
+            <p>Ваш персональный образовательный помощник. Выберите раздел в меню выше чтобы начать работу.</p>
+            
+            <div class="grid-3" style="margin-top: 2rem;">
+                <div class="card">
+                    <h3><i>📚</i> Быстрый доступ</h3>
+                    <p>Последние задания и уведомления</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                    <div class="text-sm">3 новых задания</div>
+                </div>
+                <div class="card">
+                    <h3><i>🎯</i> Ваш прогресс</h3>
+                    <p>Отслеживайте свои успехи</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%"></div>
+                    </div>
+                    <div class="text-sm">85% выполнено</div>
+                </div>
+                <div class="card">
+                    <h3><i>🔔</i> Ближайшие события</h3>
+                    <p>Расписание на сегодня</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+                    <div class="text-sm">2 занятия сегодня</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно настроек -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h2><i>⚙️</i> Настройки профиля</h2>
+            <p>Измените ваши контактные данные</p>
+            
+            <div class="form-group">
+                <label for="editEmail">Email:</label>
+                <input type="email" id="editEmail" placeholder="Введите ваш email">
+            </div>
+            
+            <div class="form-group">
+                <label for="editPhone">Телефон:</label>
+                <input type="tel" id="editPhone" placeholder="Введите ваш телефон">
+            </div>
+            
+            <div class="flex flex-between mt-3">
+                <button class="logout-btn" onclick="hideSettings()">Отмена</button>
+                <button class="login-btn" onclick="saveSettings()" style="width: auto; padding: 0.75rem 1.5rem;">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Голосовой помощник -->
+    <div class="voice-assistant">
+        <div class="voice-status" id="voiceStatus">Слушаю...</div>
+        <div class="voice-commands" id="voiceCommands">
+            <h4>Доступные команды:</h4>
+            <ul>
+                <li>"покажи расписание"</li>
+                <li>"какие оценки"</li>
+                <li>"что задали"</li>
+                <li>"мой профиль"</li>
+                <li>"открой чат"</li>
+                <li>"покажи прогресс"</li>
+                <li>"мои достижения"</li>
+                <li>"поиск [запрос]"</li>
+            </ul>
+        </div>
+        <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceAssistant()">🎤</button>
+    </div>
+
+    <script>
+        // ===== КОНСТАНТЫ И ДАННЫЕ =====
+        const validCredentials = {
+            fio: "Мударисова Рената Альфридовна",
+            password: "123456"
+        };
+
+        const studentData = {
+            // Основные данные
+            schedule: {
+                "Понедельник": [
+                    "8:00-9:20 - Занятие отсутствует",
+                    "9:35-10:55 - Занятие отсутствует",
+                    "11:35-12:55 - Математический Анализ (Лекция) (ауд. 6-415)",
+                    "13:10-14:30 - Физическая Культура (Семинар) (Корпус 3- Спортзал)", 
+                    "15:10-16:30 - Занятие отсутствует (Караоке)",
+                    "16:45-18:05 - Современная речевая культура (Практика) (ауд. 9-405)"
+                ],
+                "Вторник": [
+                    "8:00-9:20 - Математический Анализ (Лекция) (ауд. 7-206)",
+                    "9:35-10:55 - Программно-аппаратный комплекс (Лекция) (ауд. 6-211)",
+                    "11:35-12:55 - Занятие отсутствует",
+                    "13:10-14:30 - Современная речевая культура (Лекция) (ауд. 9-605)" 
+                ],
+                "Среда": [
+                    "8:00-9:20 - Алгебра и геометрия (Лекция) (ауд. 7-401)",
+                    "9:35-10:55 - Основы Информационных Технологий (Лекция) (ауд. 6-416)",
+                    "11:35-12:55 - Алгебра и геометрия (Практика) (ауд. 6-202)",
+                    "13:10-14:30 - Математический Анализ (Практика) (ауд. 6-207)", 
+                    "15:10-16:30 - Программно-аппаратный комплекс (Лабораторная Работа) (ауд. 6-311)",
+                    "16:45-18:05 - Программно-аппаратный комплекс (Лабораторная Работа) (ауд. 6-311)"
+                ],
+                "Четверг": [
+                    "8:00-9:20 - Занятие отсутствует",
+                    "9:35-10:55 - Занятие отсутствует",
+                    "11:35-12:55 - Занятие отсутствует",
+                    "13:10-14:30 - Основы Информационных Технологий (Практика) (ауд. 6-202)"
+                ],
+                "Пятница": [
+                    "8:00-9:20 - Алгебра и геометрия (Лекция) (ауд. 6-415)",
+                    "9:35-10:55 - Иностранный язык (Семинар) (ауд. 1-310)",
+                    "11:35-12:55 - Дискретная математика и математическая логика (Семинар) (ауд. 6-415)",
+                    "13:10-14:30 - Математический Анализ (Практика) (ауд. 6-415)" 
+                ],
+                "Суббота": [
+                    "11:00-16:00 - МФТИ (Лекция+ Практика) (Онлайн)"
+                ],
+                "Воскресенье": [
+                    "Отдых. УРАААААА🎉🎉🎉🎉🎉🎉🎉"
+                ]
+            },
+
+            grades: [
+                {subject: "Математический Анализ", grade: 5, teacher: "Кривошеева О.А."},
+                {subject: "Физическая Культура", grade: 5, teacher: "Я забыла. Извините"},
+                {subject: "Современная Речевая Культура", grade: 5, teacher: "Мустафина Г.Р."},
+                {subject: "Основы Российской Государственности", grade: 4, teacher: "Габдулхаков Р.Б."},
+                {subject: "Алгебра и Геометрия", grade: 5, teacher: "Гаянова М.М."},
+                {subject: "Основы Информационных Технологий", grade: 5, teacher: "Шахмаметова Г.З."},
+                {subject: "Программно-аппаратный Комплекс", grade: 5, teacher: "Костюкова А.П."},
+                {subject: "Дискретная Математика и Математическая Логика", grade: 5, teacher: "Шерыхалина Н.М."},
+                {subject: "Планирование Карьеры", grade: 5, teacher: "Белова А.С."},
+                {subject: "Проектная Деятельность", grade: 5, teacher: "Сазанова Е.Ю."},
+                {subject: "Иностранный язык", grade: 5, teacher: "Я опять забыла.Извините."}
+            ],
+
+            profile: {
+                "ФИО": "Мударисова Рената Альфридовна",
+                "Группа": "ТОП-103б", 
+                "Факультет": "ИИМиРТ",
+                "Курс": "1",
+                "Специальность": "Программная инженерия",
+                "Email": "renatamudarisova83@gmail.com",
+                "Телефон": "+7 (999) 455-56-26",
+                "Дата рождения": "28.11.2006",
+                "Адрес": "г. Уфа, ул. Мушникова, 7/3"
+            },
+
+            homework: [
+                {
+                    subject: "Математический Анализ",
+                    task: "Решить задачи по пределам: №518,521,523,532. Подготовиться к к.р. и зачету",
+                    deadline: "15.12.2025",
+                    completed: false,
+                    priority: "high"
+                },
+                {
+                    subject: "Программно-аппаратный Комплекс",
+                    task: "Лабораторная работа №3: Сборка ПК",
+                    deadline: "20.12.2025",
+                    completed: true,
+                    priority: "medium"
+                },
+                {
+                    subject: "Алгебра и Геометрия",
+                    task: "Решить задачи:№3.79,3.81,3.86,3.88,3.107,3.108,3.116,3.117,3.119 ",
+                    deadline: "18.12.2025",
+                    completed: false,
+                    priority: "high"
+                },
+                {
+                    subject: "Основы Информационных Технологий",
+                    task: "Проект: Создание базы данных",
+                    deadline: "25.12.2025",
+                    completed: false,
+                    priority: "medium"
+                },
+                {
+                    subject: "Дискретная Математика",
+                    task: "Задачи по теории графов",
+                    deadline: "22.12.2025",
+                    completed: true,
+                    priority: "low"
+                }
+            ],
+
+            events: [
+                {
+                    title: "Хакатон по программированию",
+                    date: "2025-10-28",
+                    time: "10:00",
+                    location: "Главный корпус, ауд. 6-201",
+                    description: "10-дневное соревнование по разработке IT-проектов",
+                    type: "competition",
+                    priority: "high"
+                },
+                {
+                    title: "Лекция от IT-CODE", 
+                    date: "2025-10-8",
+                    time: "15:00",
+                    location: "Актовый зал",
+                    description: "Приглашенные специалисты из IT-CODE расскажут о карьере в IT",
+                    type: "lecture",
+                    priority: "medium"
+                },
+                {
+                    title: "Идем всей группой в караоке",
+                    date: "2025-12-28",
+                    time: "18:00", 
+                    location: "Party Launge",
+                    description: "Традиционный новогодний вечер для студентов и преподавателей",
+                    type: "party",
+                    priority: "low"
+                }
+            ],
+
+            chatMessages: [
+                {
+                    sender: "Антон Гасников",
+                    message: "Привет всем! Кто-то уже сделал лабу по ПАК?",
+                    time: "10:30",
+                    type: "question"
+                },
+                {
+                    sender: "Я",
+                    message: "Я почти закончила, осталось тестирование",
+                    time: "10:32",
+                    type: "response"
+                },
+                {
+                    sender: "Александра Антипова",
+                    message: "Ребята, напоминаю про собрание завтра в 14:00",
+                    time: "11:15",
+                    type: "announcement"
+                },
+                {
+                    sender: "Тимур Валиахметов",
+                    message: "Кто хочет в библиотеку позаниматься?",
+                    time: "12:00",
+                    type: "question"
+                }
+            ],
+
+            recordBook: {
+                "1 семестр": [
+                    {subject: "Математический анализ", grades: [5, 4, 5, 5], final: 5},
+                    {subject: "Основы Информационных Технологий", grades: [5, 5, 5, 5], final: 5},
+                    {subject: "Алгебра и Геометрия", grades: [4, 5, 4, 5], final: 5},
+                    {subject: "Основы Российской Государственности", grades: [4, 5, 5], final: 5}
+                ],
+                "2 семестр": [
+                    {subject: "Программно-аппаратный комплекс", grades: [5, 5, 4], final: null},
+                    {subject: "Дискретная математика", grades: [5, 5], final: null},
+                    {subject: "Иностранный язык", grades: [5, 4, 5], final: null}
+                ]
+            },
+            
+            calendar: {
+                "2025-10-15": "Сдача матанализа",
+                "2025-10-20": "Лабораторная работа ПАК",
+                "2025-10-25": "Проект по ОИТ",
+                "2026-01-12": "Начало сессии",
+                "2025-12-31": "Новый год",
+                "2025-11-28": "День рождения"
+            },
+            
+            progress: {
+                attendance: 85,
+                assignments: 70,
+                averageGrade: 4.8,
+                chatActivity: 60,
+                studyTime: 45
+            },
+
+            achievements: [
+                {id: 1, name: "Первая пятерка", icon: "⭐", earned: true, description: "Получите первую оценку 5"},
+                {id: 2, name: "Старательный студент", icon: "📚", earned: true, description: "Выполните 5 домашних заданий"},
+                {id: 3, name: "Общительный", icon: "💬", earned: true, description: "Напишите 5 сообщений в чате"},
+                {id: 4, name: "Отличник", icon: "🏆", earned: false, description: "Получите все пятерки"},
+                {id: 5, name: "Пунктуальный", icon: "⏰", earned: false, description: "Посещайте занятия регулярно"},
+                {id: 6, name: "Исследователь", icon: "🔍", earned: false, description: "Воспользуйтесь поиском"},
+                {id: 7, name: "Организованный", icon: "📝", earned: false, description: "Создайте 3 заметки"},
+                {id: 8, name: "Активный участник", icon: "🎯", earned: true, description: "Участвуйте в мероприятиях"}
+            ],
+
+            notes: [
+                {
+                    id: 1, 
+                    title: "Важные формулы по математике", 
+                    content: "Формула производной: (x^n)' = n*x^(n-1)\nФормула интеграла: ∫x^n dx = x^(n+1)/(n+1) + C\nФормула Тейлора: f(x) = f(a) + f'(a)(x-a) + ...", 
+                    subject: "Математический Анализ", 
+                    date: "2025-10-10",
+                    tags: ["формулы", "математика"]
+                },
+                {
+                    id: 2, 
+                    title: "Список литературы", 
+                    content: "Обязательная литература:\n1. Книга по программированию\n2. Учебник по математике\n3. Конспекты лекций\n4. Статьи по алгоритмам", 
+                    subject: "Общее", 
+                    date: "2025-10-12",
+                    tags: ["литература", "учеба"]
+                },
+                {
+                    id: 3,
+                    title: "Идеи для проектов",
+                    content: "1. Мобильное приложение для учета задач\n2. Веб-сайт для изучения языков\n3. Игра для обучения программированию",
+                    subject: "Проектная деятельность",
+                    date: "2025-10-14",
+                    tags: ["проекты", "идеи"]
+                }
+            ],
+
+            // Новые данные для дополнительных функций
+            studyMaterials: {
+                lectures: [
+                    {
+                        id: 1, 
+                        name: "Лекция 1 - Матанализ.pdf", 
+                        subject: "Математический Анализ", 
+                        date: "2025-10-10", 
+                        size: "2.4 MB", 
+                        type: "pdf",
+                        description: "Введение в математический анализ"
+                    },
+                    {
+                        id: 2, 
+                        name: "Конспект лекций по алгебре.docx", 
+                        subject: "Алгебра и Геометрия", 
+                        date: "2025-10-12", 
+                        size: "1.8 MB", 
+                        type: "doc",
+                        description: "Линейная алгебра и матрицы"
+                    },
+                    {
+                        id: 3,
+                        name: "Презентация ОИТ.pptx",
+                        subject: "Основы Информационных Технологий",
+                        date: "2025-10-08",
+                        size: "5.2 MB",
+                        type: "ppt",
+                        description: "Архитектура компьютера"
+                    }
+                ],
+                labs: [
+                    {
+                        id: 1, 
+                        name: "Лабораторная работа 1.py", 
+                        subject: "Программно-аппаратный Комплекс", 
+                        date: "2025-10-15", 
+                        size: "15 KB", 
+                        type: "code",
+                        description: "Работа с Python"
+                    },
+                    {
+                        id: 2,
+                        name: "Отчет по лабе 2.pdf",
+                        subject: "Программно-аппаратный Комплекс",
+                        date: "2025-10-18",
+                        size: "890 KB",
+                        type: "pdf",
+                        description: "Анализ производительности"
+                    }
+                ],
+                books: [
+                    {
+                        id: 1, 
+                        name: "Учебник по математике.pdf", 
+                        subject: "Математический Анализ", 
+                        date: "2025-9-01", 
+                        size: "15 MB", 
+                        type: "pdf",
+                        description: "Полный курс математики"
+                    },
+                    {
+                        id: 2,
+                        name: "Алгоритмы и структуры данных.epub",
+                        subject: "Программирование",
+                        date: "2025-10-28",
+                        size: "8.7 MB",
+                        type: "ebook",
+                        description: "Классический учебник"
+                    }
+                ]
+            },
+
+            resources: [
+                {
+                    id: 1,
+                    title: "Khan Academy - Математика",
+                    url: "https://khanacademy.org",
+                    subject: "Математический Анализ",
+                    description: "Бесплатные уроки по математике с интерактивными заданиями",
+                    type: "educational",
+                    tags: ["математика", "видео", "бесплатно", "интерактив"],
+                    rating: 5
+                },
+                {
+                    id: 2, 
+                    title: "Stack Overflow",
+                    url: "https://stackoverflow.com",
+                    subject: "Программно-аппаратный Комплекс",
+                    description: "Вопросы и ответы по программированию от сообщества разработчиков",
+                    type: "forum",
+                    tags: ["программирование", "помощь", "сообщество", "QA"],
+                    rating: 5
+                },
+                {
+                    id: 3,
+                    title: "LeetCode",
+                    url: "https://leetcode.com",
+                    subject: "Программирование",
+                    description: "Платформа для подготовки к техническим собеседованиям",
+                    type: "practice",
+                    tags: ["алгоритмы", "собеседования", "задачи", "практика"],
+                    rating: 4
+                },
+                {
+                    id: 4,
+                    title: "Coursera",
+                    url: "https://coursera.org",
+                    subject: "Общее",
+                    description: "Онлайн-курсы от ведущих университетов мира",
+                    type: "educational",
+                    tags: ["курсы", "онлайн", "университеты", "сертификаты"],
+                    rating: 5
+                }
+            ],
+
+            leaderboard: [
+                {name: "Мударисова Рената", group: "ТОП-103б", avgGrade: 4.8, completedHW: 8, rank: 1, progress: 92},
+                {name: "Иванов Иван", group: "ТОП-103б", avgGrade: 4.7, completedHW: 7, rank: 2, progress: 88},
+                {name: "Петрова Петр", group: "ТОП-103б", avgGrade: 4.6, completedHW: 6, rank: 3, progress: 85},
+                {name: "Сидоров Сидр?", group: "ТОП-103б", avgGrade: 4.5, completedHW: 5, rank: 4, progress: 82},
+                {name: "Козлова Ага", group: "ТОП-103б", avgGrade: 4.4, completedHW: 4, rank: 5, progress: 78}
+            ],
+
+            settings: {
+                theme: 'default',
+                quickAccess: ['schedule', 'grades', 'homework'],
+                notifications: true,
+                sound: true,
+                language: 'ru'
+            },
+
+            // Новые данные для дополнительных функций
+            skills: [
+                {name: "Программирование", level: 4, category: "technical", progress: 80},
+                {name: "Математика", level: 5, category: "academic", progress: 95},
+                {name: "Английский язык", level: 3, category: "language", progress: 60},
+                {name: "Командная работа", level: 4, category: "soft", progress: 75},
+                {name: "Презентации", level: 3, category: "soft", progress: 65},
+                {name: "Алгоритмы", level: 4, category: "technical", progress: 85},
+                {name: "Базы данных", level: 3, category: "technical", progress: 70},
+                {name: "Веб-разработка", level: 2, category: "technical", progress: 50}
+            ],
+
+            portfolio: [
+                {
+                    id: 1,
+                    title: "Веб-приложение для учета задач",
+                    description: "Full-stack приложение на React и Node.js с возможностью управления проектами и задачами в реальном времени",
+                    technologies: ["React", "Node.js", "MongoDB", "Express", "Socket.io"],
+                    status: "completed",
+                    link: "#",
+                    date: "2025-12-15",
+                    demo: "#",
+                    github: "#",
+                    image: "",
+                    features: ["Регистрация", "Управление задачами", "Командная работа"]
+                },
+                {
+                    id: 2,
+                    title: "Мобильное приложение для изучения языков",
+                    description: "Кроссплатформенное приложение на Flutter с интерактивными уроками и системой прогресса",
+                    technologies: ["Flutter", "Dart", "Firebase", "Provider"],
+                    status: "in-progress",
+                    link: "#",
+                    date: "2025-12-01",
+                    demo: "#",
+                    github: "#",
+                    image: "",
+                    features: ["Интерактивные уроки", "Отслеживание прогресса", "Оффлайн режим"]
+                },
+                {
+                    id: 3,
+                    title: "Анализ данных студентов",
+                    description: "Система для анализа успеваемости студентов с визуализацией данных и прогнозированием",
+                    technologies: ["Python", "Pandas", "Matplotlib", "Scikit-learn"],
+                    status: "completed",
+                    link: "#",
+                    date: "2025-10-20",
+                    demo: "#",
+                    github: "#",
+                    image: "",
+                    features: ["Визуализация", "Прогнозирование", "Отчеты"]
+                }
+            ],
+
+            fatigue: {
+                currentLevel: 65,
+                lastUpdate: "2025-12-15 14:30",
+                history: [
+                    {date: "2025-12-15", level: 65},
+                    {date: "2025-12-14", level: 70},
+                    {date: "2025-12-13", level: 55},
+                    {date: "2025-12-12", level: 80},
+                    {date: "2025-12-11", level: 60}
+                ],
+                recommendations: [
+                    "Сделайте перерыв 15 минут",
+                    "Попейте воды",
+                    "Сделайте гимнастику для глаз",
+                    "Прогуляйтесь 5 минут",
+                    "Выполните дыхательные упражнения"
+                ],
+                factors: {
+                    sleep: 7,
+                    stress: 60,
+                    activity: 45,
+                    nutrition: 80
+                }
+            },
+
+            breakReminders: [
+                {time: "10:00", active: true, type: "short", duration: 15, description: "Утренний перерыв"},
+                {time: "12:30", active: true, type: "lunch", duration: 45, description: "Обеденный перерыв"},
+                {time: "15:00", active: true, type: "short", duration: 10, description: "Послеобеденный перерыв"},
+                {time: "17:30", active: true, type: "long", duration: 30, description: "Вечерний перерыв"},
+                {time: "20:00", active: false, type: "short", duration: 15, description: "Вечерний отдых"}
+            ],
+
+            // Статистика и аналитика
+            statistics: {
+                studyTime: {
+                    daily: 4.5,
+                    weekly: 28,
+                    monthly: 112
+                },
+                productivity: {
+                    focusTime: 3.2,
+                    breaks: 1.3,
+                    efficiency: 75
+                },
+                goals: {
+                    daily: 5,
+                    completed: 3,
+                    progress: 60
+                }
+            }
+        };
+
+        // Темы оформления
+        const themes = {
+            default: {
+                '--primary': '#7E57C2',
+                '--primary-dark': '#5E35B1',
+                '--primary-light': '#B39DDB',
+                '--secondary': '#26A69A',
+                '--accent': '#FF7043',
+                '--success': '#66BB6A',
+                '--warning': '#FFA726',
+                '--error': '#EF5350',
+                '--background': '#F5F7FA',
+                '--surface': '#FFFFFF',
+                '--text-primary': '#2C3E50',
+                '--text-secondary': '#546E7A',
+                '--text-light': '#90A4AE',
+                '--border': '#E1E8ED',
+                '--shadow': '0 4px 20px rgba(0,0,0,0.08)',
+                '--shadow-hover': '0 8px 30px rgba(0,0,0,0.12)',
+                '--shadow-lg': '0 10px 40px rgba(0,0,0,0.15)'
+            },
+            ocean: {
+                '--primary': '#2196F3',
+                '--primary-dark': '#1976D2',
+                '--primary-light': '#64B5F6',
+                '--secondary': '#00BCD4',
+                '--accent': '#FF9800',
+                '--success': '#4CAF50',
+                '--warning': '#FFC107',
+                '--error': '#F44336',
+                '--background': '#E3F2FD',
+                '--surface': '#FFFFFF',
+                '--text-primary': '#1565C0',
+                '--text-secondary': '#0277BD',
+                '--text-light': '#4FC3F7',
+                '--border': '#BBDEFB',
+                '--shadow': '0 4px 20px rgba(33,150,243,0.15)',
+                '--shadow-hover': '0 8px 30px rgba(33,150,243,0.25)',
+                '--shadow-lg': '0 10px 40px rgba(33,150,243,0.3)'
+            },
+            forest: {
+                '--primary': '#4CAF50',
+                '--primary-dark': '#388E3C',
+                '--primary-light': '#81C784',
+                '--secondary': '#8BC34A',
+                '--accent': '#FFC107',
+                '--success': '#66BB6A',
+                '--warning': '#FFB74D',
+                '--error': '#E57373',
+                '--background': '#E8F5E8',
+                '--surface': '#FFFFFF',
+                '--text-primary': '#2E7D32',
+                '--text-secondary': '#558B2F',
+                '--text-light': '#7CB342',
+                '--border': '#C8E6C9',
+                '--shadow': '0 4px 20px rgba(76,175,80,0.15)',
+                '--shadow-hover': '0 8px 30px rgba(76,175,80,0.25)',
+                '--shadow-lg': '0 10px 40px rgba(76,175,80,0.3)'
+            },
+            dark: {
+                '--primary': '#9575CD',
+                '--primary-dark': '#7E57C2',
+                '--primary-light': '#B39DDB',
+                '--secondary': '#4DB6AC',
+                '--accent': '#FF8A65',
+                '--success': '#81C784',
+                '--warning': '#FFB74D',
+                '--error': '#E57373',
+                '--background': '#121212',
+                '--surface': '#1E1E1E',
+                '--text-primary': '#E0E0E0',
+                '--text-secondary': '#B0BEC5',
+                '--text-light': '#78909C',
+                '--border': '#37474F',
+                '--shadow': '0 4px 20px rgba(0,0,0,0.3)',
+                '--shadow-hover': '0 8px 30px rgba(0,0,0,0.4)',
+                '--shadow-lg': '0 10px 40px rgba(0,0,0,0.5)'
+            }
+        };
+
+
+       const themeNames = {
+            'default': 'Просто УУНИТ',
+            'ocean': 'УУНИТ в океане', 
+            'forest': 'УУНИТ в лесу',
+            'dark': 'Дарк УУНИТ'
+        };
+
+
+        // ===== ОСНОВНЫЕ ФУНКЦИИ =====
+        function login() {
+            const fio = document.getElementById('fio').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (fio === validCredentials.fio && password === validCredentials.password) {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('studentName').textContent = fio + ', 1 курс • Программная инженерия';
+                errorMessage.style.display = 'none';
+                
+                // Показываем уведомление о успешном входе
+                showNotification('success', 'Добро пожаловать в LearnSpaceUUST!');
+            } else {
+                errorMessage.style.display = 'block';
+                document.getElementById('password').value = '';
+                
+                // Показываем уведомление об ошибке
+                showNotification('error', 'Неверные данные для входа');
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('fio').value = validCredentials.fio;
+            document.getElementById('password').value = validCredentials.password;
+            document.getElementById('errorMessage').style.display = 'none';
+            
+            showNotification('info', 'Вы вышли из системы');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            showNotification('success', `Тема изменена на ${isDark ? 'темную' : 'светлую'}`);
+        }
+
+        function toggleNotifications() {
+            studentData.settings.notifications = !studentData.settings.notifications;
+            showNotification('info', 
+                `Уведомления ${studentData.settings.notifications ? 'включены' : 'отключены'}`
+            );
+        }
+
+        function showSettings() {
+            document.getElementById('editEmail').value = studentData.profile.Email;
+            document.getElementById('editPhone').value = studentData.profile.Телефон;
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+
+        function hideSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        function saveSettings() {
+            const newEmail = document.getElementById('editEmail').value;
+            const newPhone = document.getElementById('editPhone').value;
+            
+            studentData.profile.Email = newEmail;
+            studentData.profile.Телефон = newPhone;
+            
+            hideSettings();
+            showNotification('success', 'Данные успешно сохранены!');
+        }
+
+        // ===== СИСТЕМА УВЕДОМЛЕНИЙ =====
+        function showNotification(type, message) {
+            if (!studentData.settings.notifications) return;
+
+            const notification = document.createElement('div');
+            notification.className = `card ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 3000;
+                min-width: 300px;
+                animation: slideInRight 0.3s ease-out;
+                border-left: 4px solid var(--${type});
+            `;
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            
+            notification.innerHTML = `
+                <div class="flex flex-between flex-gap-2">
+                    <div class="flex flex-gap-2">
+                        <span>${icons[type]}</span>
+                        <div>
+                            <strong style="text-transform: capitalize;">${type}</strong>
+                            <div class="text-sm">${message}</div>
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;">×</button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // ===== ФУНКЦИИ ДЛЯ НОВЫХ РАЗДЕЛОВ =====
+        function showSkills() {
+            let html = '<h2><i>⚡</i> Трекер навыков</h2>';
+            html += '<p>Отслеживайте развитие ваших профессиональных навыков и ставьте цели для улучшения</p>';
+            
+            // Статистика навыков
+            const totalSkills = studentData.skills.length;
+            const averageLevel = (studentData.skills.reduce((sum, skill) => sum + skill.level, 0) / totalSkills).toFixed(1);
+            const maxLevelSkills = studentData.skills.filter(skill => skill.level === 5).length;
+            
+            html += `
+                <div class="grid-3 mb-4">
+                    <div class="card text-center">
+                        <h3>${totalSkills}</h3>
+                        <p>Всего навыков</p>
+                    </div>
+                    <div class="card text-center">
+                        <h3>${averageLevel}/5</h3>
+                        <p>Средний уровень</p>
+                    </div>
+                    <div class="card text-center">
+                        <h3>${maxLevelSkills}</h3>
+                        <p>Навыков на максимуме</p>
+                    </div>
+                </div>
+            `;
+            
+            // Группировка по категориям
+            const categories = {};
+            studentData.skills.forEach(skill => {
+                if (!categories[skill.category]) {
+                    categories[skill.category] = [];
+                }
+                categories[skill.category].push(skill);
+            });
+            
+            for (const [category, skills] of Object.entries(categories)) {
+                const categoryNames = {
+                    technical: 'Технические',
+                    academic: 'Академические',
+                    language: 'Языковые',
+                    soft: 'Гибкие навыки'
+                };
+                
+                html += `<h3>${categoryNames[category] || category}</h3>`;
+                
+                skills.forEach(skill => {
+                    const dots = Array.from({length: 5}, (_, i) => 
+                        `<div class="skill-dot ${i < skill.level ? 'active' : ''}"></div>`
+                    ).join('');
+                    
+                    html += `
+                        <div class="skill-item">
+                            <div>
+                                <strong>${skill.name}</strong>
+                                <div class="skill-category">Уровень ${skill.level}/5</div>
+                            </div>
+                            <div class="skill-level">${dots}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            // Рекомендации для развития
+            html += `
+                <div class="card mt-4">
+                    <h3><i>💡</i> Рекомендации для развития</h3>
+                    <ul>
+                        <li>Сфокусируйтесь на навыках с уровнем ниже 3</li>
+                        <li>Практикуйтесь ежедневно хотя бы по 30 минут</li>
+                        <li>Ищите ментора для сложных навыков</li>
+                        <li>Участвуйте в реальных проектах</li>
+                    </ul>
+                </div>
+            `;
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showPortfolio() {
+            let html = '<h2><i>💼</i> Портфолио проектов</h2>';
+            html += '<p>Ваши учебные и личные проекты, демонстрирующие навыки и опыт</p>';
+            
+            // Статистика портфолио
+            const totalProjects = studentData.portfolio.length;
+            const completedProjects = studentData.portfolio.filter(p => p.status === 'completed').length;
+            const inProgressProjects = studentData.portfolio.filter(p => p.status === 'in-progress').length;
+            
+            html += `
+                <div class="grid-3 mb-4">
+                    <div class="card text-center">
+                        <h3>${totalProjects}</h3>
+                        <p>Всего проектов</p>
+                    </div>
+                    <div class="card text-center">
+                        <h3>${completedProjects}</h3>
+                        <p>Завершено</p>
+                    </div>
+                    <div class="card text-center">
+                        <h3>${inProgressProjects}</h3>
+                        <p>В работе</p>
+                    </div>
+                </div>
+            `;
+            
+            // Проекты
+            html += '<div class="grid-2">';
+            
+            studentData.portfolio.forEach(project => {
+                const statusBadge = project.status === 'completed' ? 
+                    '<span class="tag tag-success">✅ Завершен</span>' :
+                    '<span class="tag tag-warning">🔄 В работе</span>';
+                
+                const technologies = project.technologies.map(tech => 
+                    `<span class="tag">${tech}</span>`
+                ).join('');
+                
+                const features = project.features ? 
+                    project.features.map(feature => `<li>${feature}</li>`).join('') : '';
+                
+                html += `
+                    <div class="project-card">
+                        <div class="flex flex-between mb-2">
+                            <h3 style="margin: 0;">${project.title}</h3>
+                            ${statusBadge}
+                        </div>
+                        
+                        <p class="text-sm mb-2">${project.description}</p>
+                        
+                        <div class="project-tech mb-2">
+                            ${technologies}
+                        </div>
+                        
+                        ${features ? `
+                            <div class="mb-2">
+                                <strong class="text-sm">Особенности:</strong>
+                                <ul class="text-sm" style="margin: 0.5rem 0 0 1rem;">
+                                    ${features}
+                                </ul>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="flex flex-between mt-3">
+                            <small class="text-light">${project.date}</small>
+                            <div class="flex flex-gap-1">
+                                ${project.demo ? '<button class="tag tag-secondary" onclick="showNotification(\'info\', \'Демо проекта\')">🚀 Демо</button>' : ''}
+                                ${project.github ? '<button class="tag" onclick="showNotification(\'info\', \'GitHub проекта\')">💻 Код</button>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            
+            // Призыв к действию
+            html += `
+                <div class="card text-center mt-4">
+                    <h3><i>🎯</i> Создайте новый проект!</h3>
+                    <p>Начните новый проект чтобы расширить ваше портфолио</p>
+                    <button class="login-btn" onclick="showNotification('info', 'Функция в разработке')" 
+                            style="width: auto; padding: 0.75rem 1.5rem; margin-top: 1rem;">
+                        + Новый проект
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showFatigueTracker() {
+            let html = '<h2><i>😴</i> Трекер усталости</h2>';
+            html += '<p>Следите за вашим уровнем усталости и получайте персонализированные рекомендации</p>';
+            
+            const fatigue = studentData.fatigue;
+            
+            // Определяем цвет и статус усталости
+            let fatigueColor, fatigueStatus, fatigueDescription;
+            if (fatigue.currentLevel <= 30) {
+                fatigueColor = '#4CAF50';
+                fatigueStatus = 'Низкая';
+                fatigueDescription = 'Вы полны энергии!';
+            } else if (fatigue.currentLevel <= 60) {
+                fatigueColor = '#FFB74D';
+                fatigueStatus = 'Умеренная';
+                fatigueDescription = 'Нормальный уровень усталости';
+            } else if (fatigue.currentLevel <= 80) {
+                fatigueColor = '#FF9800';
+                fatigueStatus = 'Высокая';
+                fatigueDescription = 'Рекомендуется отдых';
+            } else {
+                fatigueColor = '#F44336';
+                fatigueStatus = 'Критическая';
+                fatigueDescription = 'Срочно нужен перерыв!';
+            }
+            
+            html += `
+                <div class="fatigue-meter">
+                    <h3>Текущий уровень усталости</h3>
+                    <div class="fatigue-level" style="color: ${fatigueColor}">
+                        ${fatigue.currentLevel}%
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${fatigue.currentLevel}%; background: ${fatigueColor};"></div>
+                    </div>
+                    <div class="flex flex-between text-sm mt-1">
+                        <span>0%</span>
+                        <span>${fatigueStatus} - ${fatigueDescription}</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+            `;
+            
+            // Факторы усталости
+            html += `
+                <div class="grid-2 mt-4">
+                    <div class="card">
+                        <h3><i>😴</i> Сон</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${fatigue.factors.sleep * 10}%;"></div>
+                        </div>
+                        <div class="text-sm">${fatigue.factors.sleep}/10 часов</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i>😰</i> Стресс</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${fatigue.factors.stress}%; background: var(--accent);"></div>
+                        </div>
+                        <div class="text-sm">${fatigue.factors.stress}%</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i>🏃</i> Активность</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${fatigue.factors.activity}%; background: var(--secondary);"></div>
+                        </div>
+                        <div class="text-sm">${fatigue.factors.activity}%</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i>🍎</i> Питание</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${fatigue.factors.nutrition}%; background: var(--success);"></div>
+                        </div>
+                        <div class="text-sm">${fatigue.factors.nutrition}%</div>
+                    </div>
+                </div>
+            `;
+            
+            // Рекомендации
+            html += `
+                <div class="card mt-4">
+                    <h3><i>💡</i> Рекомендации</h3>
+                    <div class="grid-2">
+            `;
+            
+            fatigue.recommendations.forEach((rec, index) => {
+                html += `
+                    <div class="flex flex-gap-2 p-2" style="border-bottom: 1px solid var(--border);">
+                        <span>${index + 1}.</span>
+                        <span>${rec}</span>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            // История усталости
+            html += `
+                <div class="card mt-4">
+                    <h3><i>📊</i> История усталости</h3>
+                    <div style="height: 200px; position: relative;">
+                        <div style="display: flex; align-items: end; gap: 10px; height: 150px; margin-top: 20px;">
+            `;
+            
+            fatigue.history.forEach(day => {
+                const height = (day.level / 100) * 130;
+                const color = day.level <= 30 ? '#4CAF50' : 
+                             day.level <= 60 ? '#FFB74D' : 
+                             day.level <= 80 ? '#FF9800' : '#F44336';
+                
+                html += `
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                        <div style="width: 20px; height: ${height}px; background: ${color}; border-radius: 4px 4px 0 0;"></div>
+                        <div class="text-xs mt-1">${day.level}%</div>
+                        <div class="text-xs" style="color: var(--text-light);">${day.date.split('-')[2]}</div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showBreakReminders() {
+            let html = '<h2><i>⏰</i> Напоминания о перерывах</h2>';
+            html += '<p>Регулярные перерывы помогут сохранить продуктивность и предотвратить выгорание</p>';
+            
+            // Статистика перерывов
+            const activeReminders = studentData.breakReminders.filter(r => r.active).length;
+            const totalDuration = studentData.breakReminders
+                .filter(r => r.active)
+                .reduce((sum, r) => sum + r.duration, 0);
+            
+            html += `
+                <div class="grid-3 mb-4">
+                    <div class="card text-center">
+                        <h3>${studentData.breakReminders.length}</h3>
+                        <p>Всего напоминаний</p>
+                    </div>
+                    <div class="card text-center">
+                        <h3>${activeReminders}</h3>
+                        <p>Активных</p>
+                    </div>
+                    <div class="card text-center">
+                        <h3>${totalDuration} мин</h3>
+                        <p>Общее время перерывов</p>
+                    </div>
+                </div>
+            `;
+            
+            // Карточки напоминаний
+            html += '<div class="grid-2">';
+            
+            studentData.breakReminders.forEach(reminder => {
+                const typeIcon = reminder.type === 'lunch' ? '🍽️' : 
+                               reminder.type === 'long' ? '🚶‍♀️' : '☕';
+                const typeText = reminder.type === 'lunch' ? 'Обеденный перерыв' : 
+                               reminder.type === 'long' ? 'Длинный перерыв' : 'Короткий перерыв';
+                const typeColor = reminder.type === 'lunch' ? 'var(--accent)' : 
+                                reminder.type === 'long' ? 'var(--secondary)' : 'var(--primary)';
+                
+                html += `
+                    <div class="reminder-card ${reminder.active ? 'active' : ''}">
+                        <div class="flex flex-between mb-2">
+                            <div class="flex flex-gap-2">
+                                <div style="font-size: 2rem;">${typeIcon}</div>
+                                <div>
+                                    <div class="reminder-time">${reminder.time}</div>
+                                    <div class="text-sm" style="color: var(--text-light);">${typeText}</div>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="tag ${reminder.active ? 'tag-success' : 'tag-error'}">
+                                    ${reminder.active ? 'Активно' : 'Неактивно'}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-between text-sm">
+                            <span>⏱️ ${reminder.duration} минут</span>
+                            <span>${reminder.description}</span>
+                        </div>
+                        
+                        <div class="flex flex-gap-1 mt-2">
+                            <button class="tag" onclick="toggleReminder(${studentData.breakReminders.indexOf(reminder)})" 
+                                    style="background: ${typeColor}; color: white;">
+                                ${reminder.active ? 'Отключить' : 'Включить'}
+                            </button>
+                            <button class="tag tag-secondary" onclick="showNotification('info', 'Настройки напоминания')">
+                                Настроить
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            
+            // Рекомендации по перерывам
+            html += `
+                <div class="card mt-4">
+                    <h3><i>💡</i> Правила эффективных перерывов</h3>
+                    <div class="grid-2">
+                        <div>
+                            <h4>🕒 Техника Pomodoro</h4>
+                            <p>25 минут работы → 5 минут перерыва</p>
+                        </div>
+                        <div>
+                            <h4>👀 Отдых для глаз</h4>
+                            <p>Каждые 20 минут смотрите вдаль 20 секунд</p>
+                        </div>
+                        <div>
+                            <h4>💧 Гидратация</h4>
+                            <p>Пейте воду во время каждого перерыва</p>
+                        </div>
+                        <div>
+                            <h4>🏃 Движение</h4>
+                            <p>Вставайте и двигайтесь каждые 45 минут</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function toggleReminder(index) {
+            studentData.breakReminders[index].active = !studentData.breakReminders[index].active;
+            showBreakReminders();
+            showNotification(
+                'success', 
+                `Напоминание ${studentData.breakReminders[index].active ? 'включено' : 'отключено'}`
+            );
+        }
+
+        // ===== ФУНКЦИИ ИЗ ПЕРВОГО КОДА =====
+        function showSchedule() {
+            let html = '<h2><i>📅</i> Мое расписание</h2>';
+            html += '<p>Ваше расписание занятий на неделю</p>';
+            
+            for (const day in studentData.schedule) {
+                html += `<div class="card"><h3>${day}</h3>`;
+                studentData.schedule[day].forEach(lesson => {
+                    html += `<div style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">📚 ${lesson}</div>`;
+                });
+                html += '</div>';
+            }
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showGrades() {
+            const totalSubjects = studentData.grades.length;
+            const excellentGrades = studentData.grades.filter(g => g.grade === 5).length;
+            const averageGrade = (studentData.grades.reduce((total, g) => total + g.grade, 0) / totalSubjects).toFixed(2);
+            
+            let html = '<h2><i>📊</i> Успеваемость</h2>';
+            html += '<div class="grid-3" style="margin-bottom: 1.5rem;">';
+            html += `<div class="card text-center"><h3>${totalSubjects}</h3><p>Всего предметов</p></div>`;
+            html += `<div class="card text-center"><h3>${excellentGrades}</h3><p>Отличных оценок</p></div>`;
+            html += `<div class="card text-center"><h3>${averageGrade}</h3><p>Средний балл</p></div>`;
+            html += '</div>';
+            
+            html += '<div class="table-container"><table class="table">';
+            html += '<tr><th>Предмет</th><th>Оценка</th><th>Преподаватель</th></tr>';
+            studentData.grades.forEach(grade => {
+                const color = grade.grade === 5 ? 'var(--success)' : grade.grade === 4 ? 'var(--warning)' : 'var(--error)';
+                html += `<tr>
+                    <td>${grade.subject}</td>
+                    <td style="color: ${color}; font-weight: bold;">${grade.grade}</td>
+                    <td>${grade.teacher}</td>
+                </tr>`;
+            });
+            html += '</table></div>';
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showProfile() {
+            let html = '<h2><i>👤</i> Личный профиль</h2>';
+            html += '<div class="grid-2">';
+            html += '<div class="card"><h3>Основная информация</h3>';
+            for (const key in studentData.profile) {
+                html += `<p><strong>${key}:</strong> ${studentData.profile[key]}</p>`;
+            }
+            html += '</div>';
+            html += '<div class="card"><h3>Достижения</h3>';
+            html += '<p>✅ Успешно сдана сессия</p>';
+            html += '<p>✅ Участие в олимпиаде по программированию</p>';
+            html += '<p>✅ Активность в научной работе</p>';
+            html += '<p>📈 Отличная успеваемость</p>';
+            html += '</div></div>';
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showHomework() {
+            let html = '<h2><i>📚</i> Домашние задания</h2>';
+            html += '<p>Всего заданий: ' + studentData.homework.length + '</p>';
+            
+            studentData.homework.forEach(function(hw, index) {
+                const statusClass = hw.completed ? 'homework-completed' : 'homework-pending';
+                const statusText = hw.completed ? 'Выполнено' : 'В процессе';
+                
+                html += '<div class="homework-item">';
+                html += '<div class="homework-subject">' + hw.subject + '</div>';
+                html += '<div class="homework-deadline">📅 Срок сдачи: ' + hw.deadline + '</div>';
+                html += '<div style="margin-bottom: 10px;">' + hw.task + '</div>';
+                html += '<span class="' + statusClass + '">' + statusText + '</span>';
+                html += '<button onclick="toggleHomework(' + index + ')" style="margin-left: 10px; padding: 5px 10px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer;">';
+                html += hw.completed ? 'Отметить как невыполненное' : 'Отметить как выполненное';
+                html += '</button>';
+                html += '</div>';
+            });
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function toggleHomework(index) {
+            studentData.homework[index].completed = !studentData.homework[index].completed;
+            showHomework();
+        }
+
+        function showChat() {
+            let html = '<h2><i>💬</i> Чат с одногруппниками</h2>';
+            html += '<div class="chat-container">';
+            html += '<div class="chat-messages" id="chatMessages">';
+            
+            studentData.chatMessages.forEach(function(msg) {
+                const messageClass = msg.sender === 'Я' ? 'my-message' : 'other-message';
+                html += `<div class="message ${messageClass}">`;
+                html += `<div class="message-sender">${msg.sender} • ${msg.time}</div>`;
+                html += `<div>${msg.message}</div>`;
+                html += '</div>';
+            });
+            
+            html += '</div>';
+            html += '<div class="chat-input">';
+            html += '<input type="text" id="newMessage" placeholder="Введите сообщение...">';
+            html += '<button onclick="sendMessage()">Отправить</button>';
+            html += '</div>';
+            html += '</div>';
+            
+            document.getElementById('content').innerHTML = html;
+            
+            setTimeout(() => {
+                const chatMessages = document.getElementById('chatMessages');
+                if (chatMessages) {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            }, 100);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('newMessage');
+            const message = input.value.trim();
+            
+            if (message) {
+                const newMessage = {
+                    sender: 'Я',
+                    message: message,
+                    time: new Date().toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'})
+                };
+                
+                studentData.chatMessages.push(newMessage);
+                input.value = '';
+                showChat();
+            }
+        }
+
+        function showRecordBook() {
+            let html = '<h2><i>🎓</i> Электронная зачетка</h2>';
+            html += '<div class="card">';
+            
+            studentData.recordBook["1 семестр"].forEach(subject => {
+                const avg = subject.grades.reduce((a, b) => a + b, 0) / subject.grades.length;
+                html += `
+                    <div style="padding: 15px; margin: 10px 0; border-bottom: 1px solid var(--border);">
+                        <h4>${subject.subject}</h4>
+                        <div>Текущие оценки: ${subject.grades.join(', ')}</div>
+                        <div>Средний балл: ${avg.toFixed(2)}</div>
+                        <div>Итоговая оценка: <strong>${subject.final}</strong></div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showCalendar() {
+            let html = '<h2><i>📅</i> Календарь событий</h2>';
+            
+            html += '<div class="calendar">';
+            for (let i = 1; i <= 31; i++) {
+                const date = `2024-12-${i.toString().padStart(2, '0')}`;
+                const hasEvent = studentData.calendar[date];
+                const isToday = i === 15;
+                
+                html += `<div class="calendar-day ${hasEvent ? 'has-event' : ''} ${isToday ? 'today' : ''}">${i}</div>`;
+            }
+            html += '</div>';
+            
+            html += '<div style="margin-top: 20px;">';
+            html += '<h3>Ближайшие события:</h3>';
+            for (const [date, event] of Object.entries(studentData.calendar)) {
+                html += `<div class="card">
+                         <strong>${date}</strong>: ${event}</div>`;
+            }
+            html += '</div>';
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showProgress() {
+            let html = '<h2><i>📈</i> Мой прогресс</h2>';
+            
+            html += `
+                <div class="card">
+                    <h4>Посещаемость</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${studentData.progress.attendance}%"></div>
+                    </div>
+                    <div>${studentData.progress.attendance}%</div>
+                </div>
+                
+                <div class="card">
+                    <h4>Выполненные задания</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${studentData.progress.assignments}%"></div>
+                    </div>
+                    <div>${studentData.progress.assignments}%</div>
+                </div>
+                
+                <div class="card">
+                    <h4>Средний балл</h4>
+                    <div style="font-size: 24px; font-weight: bold; color: var(--primary);">
+                        ${studentData.progress.averageGrade}
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h4>Активность в чате</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${studentData.progress.chatActivity}%"></div>
+                    </div>
+                    <div>${studentData.progress.chatActivity}%</div>
+                </div>
+            `;
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showAchievements() {
+            const earned = studentData.achievements.filter(a => a.earned);
+            const notEarned = studentData.achievements.filter(a => !a.earned);
+            const progress = Math.round((earned.length / studentData.achievements.length) * 100);
+            
+            let html = '<h2><i>🏆</i> Мои достижения</h2>';
+            html += `<div class="card">
+                <h3>Прогресс: ${progress}%</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progress}%"></div>
+                </div>
+                <p>Получено: <strong>${earned.length}</strong> из ${studentData.achievements.length}</p>
+            </div>`;
+            
+            html += '<h3>✅ Полученные достижения:</h3>';
+            if (earned.length === 0) {
+                html += '<p>Пока нет полученных достижений</p>';
+            } else {
+                earned.forEach(ach => {
+                    html += `<div class="achievement earned">
+                        <div class="achievement-icon">${ach.icon}</div>
+                        <div>
+                            <strong>${ach.name}</strong><br>
+                            <small>${ach.description}</small>
+                        </div>
+                    </div>`;
+                });
+            }
+            
+            html += '<h3>🔒 Предстоящие достижения:</h3>';
+            if (notEarned.length === 0) {
+                html += '<p>Все достижения получены! 🎉</p>';
+            } else {
+                notEarned.forEach(ach => {
+                    html += `<div class="achievement locked">
+                        <div class="achievement-icon">${ach.icon}</div>
+                        <div>
+                            <strong>${ach.name}</strong><br>
+                            <small>${ach.description}</small>
+                        </div>
+                    </div>`;
+                });
+            }
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showNotes() {
+            let html = '<h2><i>📝</i> Мои заметки</h2>';
+            html += '<button onclick="showAddNoteForm()" class="login-btn" style="width: auto; padding: 0.75rem 1.5rem; margin-bottom: 20px;">+ Добавить заметку</button>';
+            
+            if (studentData.notes.length === 0) {
+                html += '<p>Пока нет заметок. Создайте первую!</p>';
+            } else {
+                studentData.notes.forEach(note => {
+                    html += `<div class="card">
+                        <h3>${note.title}</h3>
+                        <p><strong>Предмет:</strong> ${note.subject}</p>
+                        <div class="card">
+                            <p style="white-space: pre-line; margin: 0;">${note.content}</p>
+                        </div>
+                        <small style="color: var(--text-light);">Дата создания: ${note.date}</small>
+                        <button onclick="deleteNote(${note.id})" class="tag tag-error" style="margin-left: 10px;">Удалить</button>
+                    </div>`;
+                });
+            }
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showAddNoteForm() {
+            let html = '<h2><i>📝</i> Создать новую заметку</h2>';
+            html += `
+                <div class="card">
+                    <div class="form-group">
+                        <label>Заголовок:</label>
+                        <input type="text" id="noteTitle" placeholder="Введите заголовок заметки">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Предмет:</label>
+                        <input type="text" id="noteSubject" placeholder="Например: Математика">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Текст заметки:</label>
+                        <textarea id="noteContent" placeholder="Введите текст заметки..." style="width: 100%; height: 200px; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div>
+                        <button onclick="addNote()" class="login-btn" style="width: auto; padding: 0.75rem 1.5rem;">💾 Сохранить заметку</button>
+                        <button onclick="showNotes()" class="logout-btn" style="margin-left: 10px;">❌ Отмена</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function addNote() {
+            const title = document.getElementById('noteTitle').value.trim();
+            const subject = document.getElementById('noteSubject').value.trim();
+            const content = document.getElementById('noteContent').value.trim();
+            
+            if (!title) {
+                alert('Введите заголовок заметки');
+                return;
+            }
+            
+            if (!content) {
+                alert('Введите текст заметки');
+                return;
+            }
+
+            const newNote = {
+                id: Date.now(),
+                title: title,
+                subject: subject || 'Общее',
+                content: content,
+                date: new Date().toLocaleDateString('ru-RU')
+            };
+            
+            studentData.notes.push(newNote);
+            showNotes();
+        }
+
+        function deleteNote(id) {
+            if (confirm('Удалить эту заметку?')) {
+                studentData.notes = studentData.notes.filter(note => note.id !== id);
+                showNotes();
+            }
+        }
+
+        function showStudyMaterials() {
+            let html = '<h2><i>📁</i> Учебные материалы</h2>';
+            
+            html += `
+                <div style="margin-bottom: 20px;">
+                    <button onclick="showUploadForm()" class="login-btn" style="width: auto; padding: 0.75rem 1.5rem;">
+                        📤 Загрузить файл
+                    </button>
+                </div>
+            `;
+            
+            const categories = [
+                {key: 'lectures', name: '📖 Лекции', icon: '📖'},
+                {key: 'labs', name: '🔬 Лабораторные', icon: '🔬'},
+                {key: 'books', name: '📚 Учебники', icon: '📚'}
+            ];
+            
+            categories.forEach(category => {
+                html += `
+                    <div class="card">
+                        <h3>
+                            <span style="margin-right: 10px;">${category.icon}</span>
+                            ${category.name} (${studentData.studyMaterials[category.key].length})
+                        </h3>
+                `;
+                
+                if (studentData.studyMaterials[category.key].length === 0) {
+                    html += '<p style="color: var(--text-light); text-align: center;">Файлы отсутствуют</p>';
+                } else {
+                    studentData.studyMaterials[category.key].forEach(file => {
+                        const fileIcons = {
+                            'pdf': '📕',
+                            'doc': '📄',
+                            'code': '💻',
+                            'image': '🖼️',
+                            'other': '📎'
+                        };
+                        
+                        html += `
+                            <div class="flex flex-between" style="padding: 10px; margin: 5px 0; background: var(--background); border-radius: var(--radius-sm);">
+                                <div class="flex flex-gap-2">
+                                    <span style="font-size: 20px;">${fileIcons[file.type] || fileIcons.other}</span>
+                                    <div>
+                                        <div style="font-weight: bold;">${file.name}</div>
+                                        <div class="text-sm" style="color: var(--text-light);">
+                                            ${file.subject} • ${file.size} • ${file.date}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-gap-1">
+                                    <button onclick="downloadFile('${category.key}', ${file.id})" class="tag tag-success">📥</button>
+                                    <button onclick="deleteFile('${category.key}', ${file.id})" class="tag tag-error">🗑️</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                html += '</div>';
+            });
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showResources() {
+            let html = '<h2><i>🔗</i> Полезные ресурсы</h2>';
+            
+            html += `
+                <div style="margin-bottom: 20px;">
+                    <button onclick="showAddResourceForm()" class="login-btn" style="width: auto; padding: 0.75rem 1.5rem;">
+                        ➕ Добавить ресурс
+                    </button>
+                </div>
+            `;
+            
+            if (studentData.resources.length === 0) {
+                html += '<p style="text-align: center; color: var(--text-light);">Пока нет сохраненных ресурсов</p>';
+            } else {
+                studentData.resources.forEach(resource => {
+                    const typeIcons = {
+                        'educational': '🎓',
+                        'forum': '💬', 
+                        'tool': '🛠️',
+                        'book': '📚',
+                        'video': '🎥'
+                    };
+                    
+                    html += `
+                        <div class="card">
+                            <div class="flex flex-between">
+                                <div style="flex: 1;">
+                                    <h3>
+                                        ${typeIcons[resource.type] || '🔗'} ${resource.title}
+                                    </h3>
+                                    <p><strong>Предмет:</strong> ${resource.subject}</p>
+                                    <p>${resource.description}</p>
+                                    <div style="margin-top: 10px;">
+                                        ${resource.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                    </div>
+                                </div>
+                                <div class="flex flex-gap-1">
+                                    <a href="${resource.url}" target="_blank" class="tag tag-success">🌐 Перейти</a>
+                                    <button onclick="deleteResource(${resource.id})" class="tag tag-error">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showLeaderboard() {
+            const currentStudent = studentData.leaderboard.find(s => s.name === "Мударисова Рената");
+            
+            let html = '<h2><i>⭐</i> Рейтинг студентов</h2>';
+            
+            html += `
+                <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">
+                    <h3>Ваша позиция: ${currentStudent.rank} место</h3>
+                    <div class="grid-3">
+                        <div class="text-center">
+                            <div style="font-size: 24px; font-weight: bold;">${currentStudent.avgGrade}</div>
+                            <div>Средний балл</div>
+                        </div>
+                        <div class="text-center">
+                            <div style="font-size: 24px; font-weight: bold;">${currentStudent.completedHW}</div>
+                            <div>Выполнено ДЗ</div>
+                        </div>
+                        <div class="text-center">
+                            <div style="font-size: 24px; font-weight: bold;">${currentStudent.group}</div>
+                            <div>Группа</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            html += `
+                <div class="card">
+                    <h3>Рейтинг группы ТОП-103б</h3>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Место</th>
+                                    <th>Студент</th>
+                                    <th style="text-align: center;">Средний балл</th>
+                                    <th style="text-align: center;">Выполнено ДЗ</th>
+                                    <th style="text-align: center;">Прогресс</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            studentData.leaderboard.forEach(student => {
+                const isCurrent = student.name === "Мударисова Рената";
+                const rowStyle = isCurrent ? 'background: rgba(126, 87, 194, 0.1); font-weight: bold;' : '';
+                
+                html += `
+                    <tr style="${rowStyle}">
+                        <td>
+                            ${student.rank <= 3 ? ['🥇', '🥈', '🥉'][student.rank - 1] : student.rank}
+                        </td>
+                        <td>
+                            ${student.name} ${isCurrent ? '(Вы)' : ''}
+                        </td>
+                        <td style="text-align: center;">
+                            <span style="font-weight: bold; color: ${student.avgGrade >= 4.5 ? 'var(--success)' : student.avgGrade >= 4.0 ? 'var(--warning)' : 'var(--error)'}">
+                                ${student.avgGrade}
+                            </span>
+                        </td>
+                        <td style="text-align: center;">
+                            ${student.completedHW}/10
+                        </td>
+                        <td style="text-align: center;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${student.progress}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showThemes() {
+            let html = '<h2><i>🎨</i> Персонализация</h2>';
+            html += '<div class="grid-4">';
+            
+            for (const themeName in themes) {
+                const theme = themes[themeName];
+                const isActive = studentData.settings.theme === themeName;
+                
+                html += `
+                    <div class="card" style="cursor: pointer; border: 3px solid ${isActive ? theme['--primary'] : 'var(--border)'};" onclick="applyTheme('${themeName}')">
+                        <div class="flex flex-gap-2 mb-2">
+                            <div style="width: 20px; height: 20px; background: ${theme['--primary']}; border-radius: 50%;"></div>
+                            <div style="width: 20px; height: 20px; background: ${theme['--secondary']}; border-radius: 50%;"></div>
+                        </div>
+                        <h4 style="text-transform: capitalize;"><h4>${themeNames[themeName]}</h4></h4>
+                        ${isActive ? '<div style="color: var(--primary); margin-top: 5px;">✓ Активная тема</div>' : ''}
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function applyTheme(themeName) {
+            const theme = themes[themeName];
+            for (const property in theme) {
+                document.documentElement.style.setProperty(property, theme[property]);
+            }
+            studentData.settings.theme = themeName;
+            localStorage.setItem('studentTheme', themeName);
+            showThemes();
+        }
+
+        function showEvents() {
+            let html = '<h2><i>🎪</i> Ближайшие мероприятия</h2>';
+            
+            studentData.events.forEach(event => {
+                const eventIcons = {
+                    'competition': '🏆',
+                    'lecture': '🎓',
+                    'party': '🎉'
+                };
+                
+                html += `
+                    <div class="card">
+                        <div class="flex flex-gap-2 mb-2">
+                            <span style="font-size: 24px;">${eventIcons[event.type]}</span>
+                            <h3 style="margin: 0;">${event.title}</h3>
+                        </div>
+                        <p><strong>📅 Дата:</strong> ${event.date} в ${event.time}</p>
+                        <p><strong>📍 Место:</strong> ${event.location}</p>
+                        <p>${event.description}</p>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function downloadFile(category, fileId) {
+            const file = studentData.studyMaterials[category].find(f => f.id === fileId);
+            showNotification('info', `Файл "${file.name}" будет скачан!`);
+        }
+
+        function deleteFile(category, fileId) {
+            if (confirm('Удалить этот файл?')) {
+                studentData.studyMaterials[category] = studentData.studyMaterials[category].filter(f => f.id !== fileId);
+                showStudyMaterials();
+            }
+        }
+
+        function deleteResource(id) {
+            if (confirm('Удалить этот ресурс?')) {
+                studentData.resources = studentData.resources.filter(r => r.id !== id);
+                showResources();
+            }
+        }
+
+        function showUploadForm() {
+            showNotification('info', 'Функция загрузки файлов в разработке');
+        }
+
+        function showAddResourceForm() {
+            showNotification('info', 'Функция добавления ресурсов в разработке');
+        }
+
+     
+        function performSearch() {
+            const query = document.getElementById('globalSearch').value.toLowerCase();
+            if (query.length < 2) {
+                showSearchHelp();
+                return;
+            }
+
+            let results = [];
+            
+          
+            for (const day in studentData.schedule) {
+                studentData.schedule[day].forEach(lesson => {
+                    if (lesson.toLowerCase().includes(query)) {
+                        results.push({type: '📅 Расписание', content: `${day}: ${lesson}`});
+                    }
+                });
+            }
+            
+       
+            studentData.grades.forEach(grade => {
+                if (grade.subject.toLowerCase().includes(query) || 
+                    grade.teacher.toLowerCase().includes(query)) {
+                    results.push({type: '📊 Успеваемость', content: `${grade.subject}: ${grade.grade} (${grade.teacher})`});
+                }
+            });
+            
+      
+            studentData.homework.forEach(hw => {
+                if (hw.subject.toLowerCase().includes(query) || 
+                    hw.task.toLowerCase().includes(query)) {
+                    results.push({type: '📚 ДЗ', content: `${hw.subject}: ${hw.task}`});
+                }
+            });
+
+            showSearchResults(query, results);
+        }
+
+        function showSearchHelp() {
+            let html = '<h2><i>🔍</i> Поиск по кабинету</h2>';
+            html += '<p>Введите запрос для поиска по:</p>';
+            html += '<ul>';
+            html += '<li>📅 Расписанию занятий</li>';
+            html += '<li>📊 Успеваемости и предметам</li>';
+            html += '<li>📚 Домашним заданиям</li>';
+            html += '</ul>';
+            html += '<p>Минимум 2 символа</p>';
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showSearchResults(query, results) {
+            let html = `<h2><i>🔍</i> Результаты поиска: "${query}"</h2>`;
+            
+            if (results.length === 0) {
+                html += '<p>Ничего не найдено 😔</p>';
+                html += '<p>Попробуйте другие ключевые слова</p>';
+            } else {
+                html += `<p>Найдено результатов: <strong>${results.length}</strong></p>`;
+                
+                const grouped = {};
+                results.forEach(result => {
+                    if (!grouped[result.type]) grouped[result.type] = [];
+                    grouped[result.type].push(result);
+                });
+                
+                for (const type in grouped) {
+                    html += `<h3>${type}</h3>`;
+                    grouped[type].forEach(result => {
+                        html += `<div class="search-result">${result.content}</div><br>`;
+                    });
+                }
+            }
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        // ===== ГОЛОСОВОЙ ПОМОЩНИК =====
+        let recognition = null;
+        let isListening = false;
+
+        function initVoiceRecognition() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                console.log('Голосовые команды не поддерживаются');
+                return false;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'ru-RU';
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = function() {
+                isListening = true;
+                updateVoiceUI(true);
+                showVoiceStatus('Слушаю... Говорите!', 'info');
+            };
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript.toLowerCase();
+                showVoiceStatus(`Распознано: "${transcript}"`, 'success');
+                processVoiceCommand(transcript);
+            };
+
+            recognition.onerror = function(event) {
+                isListening = false;
+                updateVoiceUI(false);
+                showVoiceStatus('Ошибка распознавания', 'error');
+            };
+
+            recognition.onend = function() {
+                isListening = false;
+                updateVoiceUI(false);
+            };
+
+            return true;
+        }
+
+        function processVoiceCommand(command) {
+            const commands = {
+                'расписание': showSchedule,
+                'оценки': showGrades,
+                'домашнее задание': showHomework,
+                'профиль': showProfile,
+                'прогресс': showProgress,
+                'навыки': showSkills,
+                'портфолио': showPortfolio,
+                'усталость': showFatigueTracker,
+                'заметки': showNotes,
+                'календарь': showCalendar,
+                'зачётка': showRecordBook,
+                'достижения': showAchievements
+            };
+
+            if (command.includes('поиск') || command.includes('найди')) {
+                const searchQuery = command.replace(/поиск|найди/gi, '').trim();
+                if (searchQuery) {
+                    document.getElementById('globalSearch').value = searchQuery;
+                    performSearch();
+                    showVoiceStatus(`Ищу: ${searchQuery}`, 'success');
+                    return;
+                }
+            }
+
+            for (const [key, action] of Object.entries(commands)) {
+                if (command.includes(key)) {
+                    showVoiceStatus(`Выполняю: ${key}`, 'success');
+                    action();
+                    return;
+                }
+            }
+
+            showVoiceStatus('Команда не распознана', 'error');
+        }
+
+        function toggleVoiceAssistant() {
+            if (!recognition && !initVoiceRecognition()) {
+                showNotification('error', 'Голосовые команды не поддерживаются');
+                return;
+            }
+
+            if (isListening) {
+                recognition.stop();
+            } else {
+                try {
+                    recognition.start();
+                } catch (error) {
+                    showNotification('error', 'Ошибка запуска распознавания');
+                }
+            }
+        }
+
+        function updateVoiceUI(listening) {
+            const voiceBtn = document.getElementById('voiceBtn');
+            const voiceStatus = document.getElementById('voiceStatus');
+            
+            if (listening) {
+                voiceBtn.classList.add('listening');
+                voiceBtn.textContent = '🔴';
+                voiceStatus.style.display = 'block';
+            } else {
+                voiceBtn.classList.remove('listening');
+                voiceBtn.textContent = '🎤';
+                setTimeout(() => {
+                    voiceStatus.style.display = 'none';
+                }, 2000);
+            }
+        }
+
+        function showVoiceStatus(message, type = 'info') {
+            const voiceStatus = document.getElementById('voiceStatus');
+            voiceStatus.textContent = message;
+            voiceStatus.style.display = 'block';
+            
+            if (type === 'error') {
+                voiceStatus.style.background = 'var(--error)';
+                voiceStatus.style.color = 'white';
+            } else if (type === 'success') {
+                voiceStatus.style.background = 'var(--success)';
+                voiceStatus.style.color = 'white';
+            } else {
+                voiceStatus.style.background = 'var(--surface)';
+                voiceStatus.style.color = 'var(--text-primary)';
+            }
+        }
+
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('fio').value = validCredentials.fio;
+            document.getElementById('password').value = validCredentials.password;
+            
+            // Загрузка темы
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+            
+            // Инициализация голосового помощника
+            initVoiceRecognition();
+
+            // Обработчики для голосового помощника
+            const voiceBtn = document.getElementById('voiceBtn');
+            if (voiceBtn) {
+                voiceBtn.addEventListener('mouseenter', function() {
+                    document.getElementById('voiceCommands').style.display = 'block';
+                });
+                voiceBtn.addEventListener('mouseleave', function() {
+                    setTimeout(() => {
+                        document.getElementById('voiceCommands').style.display = 'none';
+                    }, 1000);
+                });
+            }
+        });
+
+        // Обработчики клавиш
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') login();
+        });
+
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && document.getElementById('newMessage')) {
+                sendMessage();
+            }
+        });
+
+        // Обработчик клика вне модального окна
+        document.getElementById('settingsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideSettings();
+            }
+        });
+    </script>
+</body>
+</html>
